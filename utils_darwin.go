@@ -11,7 +11,7 @@ import (
 	"syscall"
 )
 
-var reSlashDedup = regexp.MustCompile(`\/{2,}`)
+var reSlashDedup = regexp.MustCompile(`/{2,}`)
 
 func fail500(w http.ResponseWriter, context string, err error) {
 	http.Error(w, "Internal server error", 500)
@@ -33,7 +33,7 @@ func cleanUpProcessGroup(cmd *exec.Cmd) {
 
 	process := cmd.Process
 	if process != nil && process.Pid > 0 {
-		syscall.Kill(-process.Pid, syscall.SIGTERM)
+		_ = syscall.Kill(-process.Pid, syscall.SIGTERM)
 	}
 
 	go cmd.Wait()
